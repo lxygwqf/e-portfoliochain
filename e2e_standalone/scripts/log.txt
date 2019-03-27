@@ -1,0 +1,1 @@
+/home/xuli/e2e_standalone/scripts/script.sh: line 82: peer: command not found

@@ -1,0 +1,184 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2'
+
+services:
+  zookeeper:
+    image: hyperledger/fabric-zookeeper
+    restart: always
+    ports:
+      - '2181'
+      - '2888'
+      - '3888'
+
+  kafka:
+    image: hyperledger/fabric-kafka
+    restart: always
+    environment:
+      - KAFKA_MESSAGE_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
+      - KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE=false
+    ports:
+      - '9092'
+
+  orderer.wisedu.com:
+    container_name: orderer.wisedu.com
+    image: hyperledger/fabric-orderer
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=false
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+      - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+      - ORDERER_KAFKA_VERBOSE=true
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ../crypto-config/ordererOrganizations/wisedu.com/orderers/orderer.wisedu.com/msp:/var/hyperledger/orderer/msp
+    - ../crypto-config/ordererOrganizations/wisedu.com/orderers/orderer.wisedu.com/tls/:/var/hyperledger/orderer/tls
+    ports:
+      - 7050:7050
+
+  peer0.org1.wisedu.com:
+    container_name: peer0.org1.wisedu.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.org1.wisedu.com
+      - CORE_PEER_ADDRESS=peer0.org1.wisedu.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.org1.wisedu.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.wisedu.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.wisedu.com:7051
+      - CORE_PEER_LOCALMSPID=Org1MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/org1.wisedu.com/peers/peer0.org1.wisedu.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org1.wisedu.com/peers/peer0.org1.wisedu.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - 7051:7051
+      - 7052:7052
+      - 7053:7053
+
+  peer1.org1.wisedu.com:
+    container_name: peer1.org1.wisedu.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.org1.wisedu.com
+      - CORE_PEER_ADDRESS=peer1.org1.wisedu.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.org1.wisedu.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.wisedu.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.wisedu.com:7051
+      - CORE_PEER_LOCALMSPID=Org1MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/org1.wisedu.com/peers/peer1.org1.wisedu.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org1.wisedu.com/peers/peer1.org1.wisedu.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - 8051:7051
+      - 8052:7052
+      - 8053:7053
+
+  peer0.org2.wisedu.com:
+    container_name: peer0.org2.wisedu.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.org2.wisedu.com
+      - CORE_PEER_ADDRESS=peer0.org2.wisedu.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.org2.wisedu.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.wisedu.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.wisedu.com:7051
+      - CORE_PEER_LOCALMSPID=Org2MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/org2.wisedu.com/peers/peer0.org2.wisedu.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org2.wisedu.com/peers/peer0.org2.wisedu.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - 9051:7051
+      - 9052:7052
+      - 9053:7053
+
+  peer1.org2.wisedu.com:
+    container_name: peer1.org2.wisedu.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.org2.wisedu.com
+      - CORE_PEER_ADDRESS=peer1.org2.wisedu.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.org2.wisedu.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.wisedu.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.wisedu.com:7051
+      - CORE_PEER_LOCALMSPID=Org2MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/org2.wisedu.com/peers/peer1.org2.wisedu.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org2.wisedu.com/peers/peer1.org2.wisedu.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - 10051:7051
+      - 10052:7052
+      - 10053:7053
+
+  peer0.org3.wisedu.com:
+    container_name: peer0.org3.wisedu.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.org3.wisedu.com
+      - CORE_PEER_ADDRESS=peer0.org3.wisedu.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.org3.wisedu.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org3.wisedu.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org3.wisedu.com:7051
+      - CORE_PEER_LOCALMSPID=Org3MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/org3.wisedu.com/peers/peer0.org3.wisedu.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org3.wisedu.com/peers/peer0.org3.wisedu.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - 11051:7051
+      - 11052:7052
+      - 11053:7053
+
+  peer1.org3.wisedu.com:
+    container_name: peer1.org3.wisedu.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.org3.wisedu.com
+      - CORE_PEER_ADDRESS=peer1.org3.wisedu.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.org3.wisedu.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org3.wisedu.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org3.wisedu.com:7051
+      - CORE_PEER_LOCALMSPID=Org3MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/org3.wisedu.com/peers/peer1.org3.wisedu.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/org3.wisedu.com/peers/peer1.org3.wisedu.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - 12051:7051
+      - 12052:7052
+      - 12053:7053
+

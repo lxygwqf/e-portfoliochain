@@ -1,0 +1,194 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+services:
+  zookeeper0:
+    container_name: zookeeper0
+    extends:
+      file: base/docker-compose-base.yaml
+      service: zookeeper
+    environment:
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
+
+  zookeeper1:
+    container_name: zookeeper1
+    extends:
+      file: base/docker-compose-base.yaml
+      service: zookeeper
+    environment:
+      - ZOO_MY_ID=2
+      - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
+
+  zookeeper2:
+    container_name: zookeeper2
+    extends:
+      file: base/docker-compose-base.yaml
+      service: zookeeper
+    environment:
+      - ZOO_MY_ID=3
+      - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
+
+  kafka0:
+    container_name: kafka0
+    extends:
+      file: base/docker-compose-base.yaml
+      service: kafka
+    environment:
+      - KAFKA_BROKER_ID=0
+      - KAFKA_MIN_INSYNC_REPLICAS=2
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+
+  kafka1:
+    container_name: kafka1
+    extends:
+      file: base/docker-compose-base.yaml
+      service: kafka
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_MIN_INSYNC_REPLICAS=2
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+
+  kafka2:
+    container_name: kafka2
+    extends:
+      file: base/docker-compose-base.yaml
+      service: kafka
+    environment:
+      - KAFKA_BROKER_ID=2
+      - KAFKA_MIN_INSYNC_REPLICAS=2
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+
+  kafka3:
+    container_name: kafka3
+    extends:
+      file: base/docker-compose-base.yaml
+      service: kafka
+    environment:
+      - KAFKA_BROKER_ID=3
+      - KAFKA_MIN_INSYNC_REPLICAS=2
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+
+  orderer.wisedu.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.wisedu.com
+    container_name: orderer.wisedu.com
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+      - kafka0
+      - kafka1
+      - kafka2
+      - kafka3
+
+  ca:
+    container_name: ca
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.wisedu.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/6cbb77f6ee58a27de97230e6427b19fac0a925ee4bc73f517f8c7f027d31fae5_sk
+      - Dcom.ibm.jsse2.overrideDefaultTLS=true
+      - Dhttps.protocols=TLSv1.2
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.wisedu.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/6cbb77f6ee58a27de97230e6427b19fac0a925ee4bc73f517f8c7f027d31fae5_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/org1.wisedu.com/ca/:/etc/hyperledger/fabric-ca-server-config
+
+  peer0.org1.wisedu.com:
+    container_name: peer0.org1.wisedu.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.org1.wisedu.com      
+
+  peer1.org1.wisedu.com:
+    container_name: peer1.org1.wisedu.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.org1.wisedu.com      
+
+  peer0.org2.wisedu.com:
+    container_name: peer0.org2.wisedu.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.org2.wisedu.com
+
+  peer1.org2.wisedu.com:
+    container_name: peer1.org2.wisedu.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.org2.wisedu.com
+
+  peer0.org3.wisedu.com:
+    container_name: peer0.org3.wisedu.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.org3.wisedu.com
+
+  peer1.org3.wisedu.com:
+    container_name: peer1.org3.wisedu.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.org3.wisedu.com
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_LOGGING_LEVEL=DEBUG
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.org1.wisedu.com:7051
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.wisedu.com/peers/peer0.org1.wisedu.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.wisedu.com/peers/peer0.org1.wisedu.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.wisedu.com/peers/peer0.org1.wisedu.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.wisedu.com/users/Admin@org1.wisedu.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+#    command: /bin/bash -c './scripts/script.sh ${CHANNEL_NAME}; sleep $TIMEOUT'
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode/go
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - orderer.wisedu.com
+      - peer0.org1.wisedu.com
+      - peer1.org1.wisedu.com
+      - peer0.org2.wisedu.com
+      - peer1.org2.wisedu.com
+      - peer0.org3.wisedu.com
+      - peer1.org3.wisedu.com

@@ -1,0 +1,86 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#parse("vm/config.vm")
+version: '2'
+
+services:
+  zookeeper:
+    image: hyperledger/fabric-zookeeper
+    restart: always
+    ports:
+      - '2181'
+      - '2888'
+      - '3888'
+
+  kafka:
+    image: hyperledger/fabric-kafka
+    restart: always
+    environment:
+      - KAFKA_MESSAGE_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
+      - KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE=false
+    ports:
+      - '9092'
+
+  orderer.${DOMAIN_NAME}.com:
+    container_name: orderer.${DOMAIN_NAME}.com
+    image: hyperledger/fabric-orderer
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=false
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+      - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+      - ORDERER_KAFKA_VERBOSE=true
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ../crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer.${DOMAIN_NAME}.com/msp:/var/hyperledger/orderer/msp
+    - ../crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer.${DOMAIN_NAME}.com/tls/:/var/hyperledger/orderer/tls
+    ports:
+      - 7050:7050
+
+#set( $PEER_PORT1 = 7051 )
+#set( $PEER_PORT2 = 7052 )
+#set( $PEER_PORT3 = 7053 )
+#foreach( $ORG in $PEERS.keySet() )
+#foreach($PEER in $PEERS.get($ORG))
+#set ($ORGUP = $ORG.substring(0,1).toUpperCase() + $ORG.substring(1,$ORG.length()))
+  ${PEER}.${ORG}.${DOMAIN_NAME}.com:
+    container_name: ${PEER}.${ORG}.${DOMAIN_NAME}.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=${PEER}.${ORG}.${DOMAIN_NAME}.com
+      - CORE_PEER_ADDRESS=${PEER}.${ORG}.${DOMAIN_NAME}.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=${PEER}.${ORG}.${DOMAIN_NAME}.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=${PEER}.${ORG}.${DOMAIN_NAME}.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.${ORG}.${DOMAIN_NAME}.com:7051
+      - CORE_PEER_LOCALMSPID=${ORGUP}MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/${ORG}.${DOMAIN_NAME}.com/peers/${PEER}.${ORG}.${DOMAIN_NAME}.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/${ORG}.${DOMAIN_NAME}.com/peers/${PEER}.${ORG}.${DOMAIN_NAME}.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - ${PEER_PORT1}:7051
+      - ${PEER_PORT2}:7052
+      - ${PEER_PORT3}:7053
+
+#set( $PEER_PORT1 = $PEER_PORT1 + 1000 )
+#set( $PEER_PORT2 = $PEER_PORT2 + 1000 )
+#set( $PEER_PORT3 = $PEER_PORT3 + 1000 )
+#end
+#end

@@ -1,0 +1,6 @@
+执行方式两种：
+   一种按manual.sh一步步执行 需要讲docker-compose-cli.yaml文件内的command注释掉
+   另一种是直接执行network_setup.sh 需要将command注释去掉
+
+
+docker-compose-cli.yaml是不使用couchDB的配置文件。如果要用couchDB就使用docker-compose-cli1.yaml

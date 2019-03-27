@@ -1,0 +1,28 @@
+#parse("vm/config.vm")
+OrdererOrgs:
+  - Name: Orderer
+    Domain: ${DOMAIN_NAME}.com
+    CA:
+        Country: US
+        Province: California
+        Locality: San Francisco
+    Specs:
+      - Hostname: orderer
+PeerOrgs:
+#set($COUNT=0)
+#foreach( $ORG in $ORGS )
+#set( $COUNT = $COUNT + 1 )
+#end
+#foreach($item in $PEERS.entrySet())
+  - Name: Org${foreach.count}
+    Domain: ${item.key}.${DOMAIN_NAME}.com
+    EnableNodeOUs: true
+    CA:
+        Country: US
+        Province: California
+        Locality: San Francisco
+    Template:
+      Count: ${item.value.size()}
+    Users:
+      Count: 1
+#end
