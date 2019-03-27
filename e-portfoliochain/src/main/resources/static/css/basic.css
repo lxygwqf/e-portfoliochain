@@ -1,0 +1,125 @@
+a{
+    font-size: 16px;
+    color: #160000;
+    line-height: 16px;
+}
+li{
+    list-style:none;
+    display: inline-block;
+}
+.gray-text{
+    font-size: 16px;
+    color: #97A8B7;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+.header{
+    background: #fff;
+    width:100%;
+    height:110px;
+    padding:25px 0;
+}
+.nav-box{
+    width:1200px;
+    margin:0 auto;
+}
+.nav-title{
+    display: inline-block;
+    float: right;
+    vertical-align: middle;
+    margin-top: 11px;
+}
+.nav-title li {
+    display: inline-block;
+    margin-right:40px;
+    font-size: 16px;
+    color: #344758;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 16px;
+    height:30px;
+}
+.nav-title li:last-child{
+    margin-right:0;
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+    color: #289FFF;
+    background: #fff;
+}
+.nav-title.nav-pills>li.active>a:after, .nav-title.nav-pills>li.active>a:focus:after, .nav-title.nav-pills>li.active>a:hover:after{
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #289FFF;
+    position: absolute;
+    bottom: -14px;
+    left: calc(50% - 2px);
+}
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #fff;
+    color: #289FFF;
+}
+.container{
+    width:1200px;
+}
+.footer{
+    background: #2D343A;
+    font-size: 12px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    line-height: 12px;
+    text-align: center;
+    width:100%;
+}
+.footer-box{
+    width:870px;
+    margin:0 auto;
+    display: flex;
+}
+.footer .item-box{
+    display: inline-block;
+    margin:50px 125px 50px 0;
+    text-align: left;
+}
+.footer .item-box:last-child{
+    margin:50px 0 50px 110px;
+}
+.footer .item-box ul{
+    padding-left: 0;
+}
+.footer .item-box li{
+    display: block;
+    margin:15px 0;
+
+}
+.footer .item-box strong{
+    position: relative;
+    margin-bottom: 30px;
+    display: block;
+}
+.footer .item-box strong:after{
+    content: '';
+    width: 12px;
+    height: 4px;
+    background: #637A8E;
+    border-radius: 2px;
+    position: absolute;
+    bottom: -14px;
+    left:0;
+}
+.footer-address{
+    background: rgba(30,36,41,0.60);
+    width:100%;
+    height:68px;
+    padding:24px 0;
+    text-align: center;
+}
+.footer-address span{
+    font-size: 12px;
+    color: #FFFFFF;
+    line-height: 20px;
+    display: inline-block;
+    margin-right:66px;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/basic.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <title>学程链</title>
+</head>
+<body>
+    <div class="wrapper">
+        <img class="bg-img" src="../images/login.jpg"/>
+        <div class="main">
+            <div class="logo"> <a href="myindex.html"><img src="../images/logo1.png"/></a></div>
+            <div class="login-box">
+                <div class="title">个人用户登录</div>
+                <form class="form-horizontal" action="index" method="post" id="loginform">
+                    <input type="text" class="form-control input-lg" name="loginName" id="loginName" placeholder="用户名">
+                    <input type="password" class="form-control  input-lg" name="password" id="password" placeholder="密码">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" id="loginbtn">登录</button>
+                    <p class="gray-text">
+                        <span style="float:left">忘记密码，点击<a href="#">重置</a></span>
+                        <span style="float:right">还没有账号?<a href="#">注册</a></span>
+                    </p>
+                </form>
+            </div>
+        </div>
+        <div class="footer-address">
+            <span>地址：南京市江宁区将军大道100号</span>
+            <span>电话： 4007-99-4007（服务）</span>
+            <span>Copyright@2017 - 2019 江苏金智教育信息股份有限公司</span>
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+	$(function(){
+		$("#loginbtn").click(function(){
+			var loginName = $("#loginName");
+			var password = $("#password");
+			var msg = "";
+			if(loginName.val() == ""){
+				msg = "登录名不能为空!";
+				loginName.focus();
+			}else if(password.val() == ""){
+				msg = "密码不能为空!";
+				password.focus();
+			}
+			if(msg != ""){
+				alert(msg);
+			}else{
+			    document.cookie = loginName;
+				$("#loginform").submit();
+			}
+		})
+	})
+
+    </script>
+</body>
+</html>

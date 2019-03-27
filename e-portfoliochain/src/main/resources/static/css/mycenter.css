@@ -1,0 +1,141 @@
+.my-container{
+    background: #F8F8F8;
+    padding:20px 0 90px 0;
+}
+.my-container .container{
+    display: flex;
+}
+.mycenter{
+    width:270px;
+    margin-right:20px;
+}
+.myinfo{
+    width: 270px;
+    height:270px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    text-align: center;
+    padding:30px;
+    margin-bottom:17px;
+}
+.myinfo .myname {
+    margin-top:14px;
+    position: relative;
+}
+.myinfo .myname strong {
+    font-size: 20px;
+    color: #1E2429;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 20px;
+}
+.myinfo .qcrode{
+    position: absolute;
+    margin:-1px 0 0 8px;
+}
+.myinfo .qcrode img{
+    margin-right:8px;
+}
+.bradge{
+    font-size: 12px;
+    color: #F9562A;
+    letter-spacing: 0;
+    text-align: center;
+    line-height: 12px;
+    border: 1px solid #F9562A;
+   border-radius: 9px;
+   display: inline-block;
+   padding:3px 5px;
+}
+.myinfo .rzbtn{
+    background: #289FFF;
+    border-radius: 10px;
+    width:75px;
+    height:27px;
+    border-color:#289FFF;
+    line-height:1;
+}
+.myinfoTab .nav>li>a{
+    position: relative;
+    display: block;
+    padding: 20px 0;
+    text-align: center;
+    background: #fff;
+}
+.myinfoTab .nav-stacked>li+li{
+    margin-top:0;
+}
+.mycenter-con{
+    width:100%;
+    background: #fff;
+}
+.mydaTab.nav>li>a{
+    padding:25px;
+}
+ul.mydaTab{
+    border-bottom: 1px solid #E0E7ED;
+}
+.mydaTab.nav-pills>li.active>a:after, .mydaTab.nav-pills>li.active>a:focus:after, .mydaTab.nav-pills>li.active>a:hover:after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    margin-left: -5px;
+    width: 12px;
+    height: 4px;
+    background: #289FFF;
+    border-radius: 2px;
+}
+.my-conTab2 .tab-pane{
+    margin-top:25px;
+}
+.my-conTab2 .tab-pane ul{
+    padding-left:25px; 
+    margin-bottom: 100px;
+}
+.my-conTab2 .tab-pane li{
+    width:48%; 
+    margin-bottom:4px;
+    font-size: 16px;
+    color: #1E2429;
+    letter-spacing: 1px;
+    line-height: 16px;
+}
+.my-conTab2 .tab-pane ul span{
+    background: #F8F8F8;
+    border-radius: 7px;
+    width: 120px;
+    display: inline-block;
+    height: 43px;
+    line-height: 43px;
+    text-align: center;
+    margin-right:17px;
+    font-size: 16px;
+    color: #637A8E;
+    letter-spacing: 1px;
+}
+.my-form-box{
+    width:460px;
+    margin:50px auto 0 auto;
+}
+.result-form-box{
+    width:85%;
+    margin:50px auto 0 auto;
+}
+.mycenter-con .btn-primary {
+    color: #fff;
+    background-color: #289FFF;
+    border-color: #289FFF;
+}
+#daslFormResult{
+    display:none;
+}
+.result-form-box p{
+    line-height: 34px;
+    background: #F8F8F8;
+    padding-left: 10px;
+    border-radius: 5px;
+}
+.choose-file{
+    margin-top: 5px;
+}

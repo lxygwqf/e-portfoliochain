@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/basic.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/mycenter.css">
+    <title>学程链</title>
+</head>
+
+<body>
+<div class="header">
+    <div class="nav-box">
+        <img src="../images/logo.png" alt="">
+        <ul class="nav-title">
+            <li><a href="myindex.html">首页</a></li>
+            <li><a href="myindex.html">学程链简介</a></li>
+            <li><a href="#">问题与帮助</a></li>
+            <li><a href="mycenter.html"><p class="res"></p></a></li>
+            <li><a href="#">中文|EN</a></li>
+        </ul>
+    </div>
+</div>
+<div class="my-container">
+    <div class="container">
+        <div class="mycenter">
+            <div class="myinfo">
+                <p id="msg"></p>
+                <p class="myname"><strong class="res"></strong><span class="qcrode"><img src="../images/myQcrode.png" />
+                <p class="gray-text">学程号：3897491</p>
+                <button type="button" class="btn btn-primary btn-sm rzbtn">认证</button>
+            </div>
+            <div class="myinfoTab">
+                <ul class="nav nav-pills nav-stacked" role="tablist" id="mycenterTab">
+                    <li role="presentation" ><a href="mycenter.html">档案上链</a></li>
+                    <li role="presentation"><a href="search.html" >档案查询</a></li>
+                    <li role="presentation"><a href="thirdSearch.html"  >跨校查询</a></li>
+                    <li role="presentation"><a href="Authorize.html" >授权处理</a></li>
+                    <li role="presentation"><a href="validation.html" >证书验证</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mycenter-con">
+            <div class="tab-content">
+                <!--<div role="tabpanel" class="tab-pane" id="dacx">-->
+                <form class="form-horizontal my-form-box" action="showRecordsByUUID" method="post" id="searchform">
+                    <div class="form-group">
+                        <label  class="col-sm-4 control-label">学生档案uuid：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="UUID" name="UUID">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-4 control-label">学号：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="studentid" name="studentid">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-6 col-sm-2">
+                            <button type="submit" class="btn btn-primary btn-block" id="search">查询</button>
+                        </div>
+                    </div>
+                </form>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+		$('#mycenterTab li:eq(2) a').tab('show');
+	});
+
+    $(function showCookie() {
+		var loginName = document.cookie.split("=");
+		if(loginName[1]=='seu')
+		{
+		    cookie_info = '东南大学';
+		    png_info = "<img src='../images/seu.png' >";
+		}
+		else{
+		    cookie_info ='南京大学';
+		    png_info = "<img src='../images/nju.png' >";
+		 }
+		for(var i = 0;i<document.getElementsByClassName("res").length;i++){
+		    document.getElementsByClassName("res")[i].innerHTML = cookie_info;
+		}
+		document.getElementById("msg").innerHTML = png_info;
+	});
+
+	$(function(){
+		$("#search").click(function(){
+			var UUID = $("#UUID");
+			var studentid = $("#studentid");
+			var msg = "";
+			if(UUID.val() == ""){
+				msg = "不能为空!";
+				IdentityID.focus();
+			}else if(studentid.val() == ""){
+				msg = "不能为空!";
+				SchoolID.focus();
+			}
+			if(msg != ""){
+				alert(msg);
+			}else{
+				$("#searchform").submit();
+			}
+			})
+	})
+</script>
+<div class="footer">
+    <div class="footer-box">
+        <div class="item-box">
+            <strong>关于公司</strong>
+            <ul>
+                <li>公司概况</li>
+                <li>在线咨询</li>
+                <li>联系我们</li>
+            </ul>
+        </div>
+        <div class="item-box">
+            <strong>友情链接</strong>
+            <ul>
+                <li>智慧校园云工场</li>
+                <li>阿里云大学</li>
+                <li>好大学在线</li>
+                <li>知途网</li>
+            </ul>
+        </div>
+        <div class="item-box">
+            <strong>下载中心</strong>
+            <ul>
+                <li>产品白皮书</li>
+                <li>学程链简介</li>
+            </ul>
+        </div>
+        <div class="item-box">
+            <img src="../images/qcrode.png" alt="">
+            <p>扫描关注金智教育</p>
+        </div>
+    </div>
+
+</div>
+<div class="footer-address">
+    <span>地址：南京市江宁区将军大道100号</span>
+    <span>电话： 4007-99-4007（服务）</span>
+    <span>Copyright@2017 - 2019 江苏金智教育信息股份有限公司</span>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/basic.js"></script>
+</body>
+
+</html>
