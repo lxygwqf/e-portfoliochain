@@ -1,0 +1,41 @@
+spring.autoconfigure.exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+endpoints.cors.allowed-methods: "*"
+endpoints.cors.allowed-origins: "*"
+admin.name: admin
+server.port: 8088
+service.url: http://localhost:8006
+logging:
+  level:
+    root:
+      org.springframework.security: DEBUG
+      org.springframework.web: DEBUG
+      org.hibernate: DEBUG
+      org.apache.commons.dbcp2: DEBUG
+  path: logs
+fabric:
+  channel_name: filechannel
+  chaincode_name: filechaincode
+  chaincode_path: github.com/hyperledger/fabric/examples/chaincode/go/filechaincode
+  chaincode_version: 1.0
+  org_name: org1
+  org_msp: Org1MSP
+  org_domain_name: org1.wisedu.com
+  peers:
+  - peer_name: peer0.org1.wisedu.com
+    peer_eventhub_name: peer0.org1.wisedu.com
+    peer_location: grpc://127.0.0.1:7051
+    peer_eventhub_location: grpc://127.0.0.1:7053
+    ca_location: http://127.0.0.1:7054
+#  - peer_name: peer1.org1.wisedu.com
+#    peer_eventhub_name: peer1.org1.wisedu.com
+#    peer_location: grpc://127.0.0.1:8051
+#    peer_eventhub_location: grpc://127.0.0.1:8053
+#    ca_location: http://127.0.0.1:8054
+  orderer_domain_name: wisedu.com
+  orderers:
+  - orderer_name: orderer.wisedu.com
+    orderer_location: grpc://127.0.0.1:7050
+#  - orderer_name: orderer2.wisedu.com
+#    orderer_location: grpc://127.0.0.1:8050
+#  - orderer_name: orderer3.wisedu.com
+#    orderer_location: grpc://127.0.0.1:9050
