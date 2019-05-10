@@ -6,13 +6,13 @@ e-portfoliochain是总的有网站的项目，通过这个项目调用上面两�
 
 
 运行步骤：
-1.idchaincode filechaincode链码写到e2e_standalone/chaincode/go中
-2.先运行只安装一个链码的idchaincode，运行步骤如下:
-	1. bash manual.sh
-        2.bash ./scripts/createChannel.sh
-        3.bash ./scripts/joinChannel.sh
-        4.bash ./scripts/installChaincode.sh
-        5.bash ./scripts/instantiateChaincode.sh
+1.idchaincode filechaincode链码写到e2e_standalone/chaincode/go中。
+2.先运行只安装一个链码的idchaincode，运行步骤如下:  
+	1. bash manual.sh  
+	2.bash ./scripts/createChannel.sh  
+        3.bash ./scripts/joinChannel.sh  
+        4.bash ./scripts/installChaincode.sh  
+        5.bash ./scripts/instantiateChaincode.sh  
 idchaincode链码安装、实例化完毕
 
 3.再安装filechaincode链码
