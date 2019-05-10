@@ -1,7 +1,7 @@
 这是在fabric-java-sdk基础上写的项目。
-xuchengEncrypt这个项目是加密服务，为下面两个项目调用 ； 
-blockchain-application-using-springboot这个里面安装的是身份链链码idchaincode,
-Fileblockchain-application-using-springboot里面安装的是存证链链码filechaincode。
+xuchengEncrypt这个项目是加密服务，为下面两个项目调用。
+blockchain-application-using-springboot这个里面安装的是身份链链码idchaincode,  
+Fileblockchain-application-using-springboot里面安装的是存证链链码filechaincode。  
 e-portfoliochain是总的有网站的项目，通过这个项目调用上面两个项目接口
 
 
