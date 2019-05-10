@@ -60,14 +60,14 @@ idchaincode链码安装、实例化完毕
 ///////////////////////////////////////////////////////////至此e2e_standalone操作完成
 
 接下来处理IDEA
-4.将e2e_standalone里面生成的channel-artifacts和crypto-config替换掉blockchain-application-using-springboot和Fileblockchain-application-using-springboot工程里面的
-5.application.yaml中：下面这些内容要匹配
-	channel_name: mychannel
-    	chaincode_name: idchaincode
-  	chaincode_path: github.com/hyperledger/fabric/examples/chaincode/go/idchaincode
+4.将e2e_standalone里面生成的channel-artifacts和crypto-config替换掉blockchain-application-using-springboot和Fileblockchain-application-using-springboot工程里面的  
+5.application.yaml中：下面这些内容要匹配  
+	channel_name: mychannel  
+    	chaincode_name: idchaincode  
+  	chaincode_path: github.com/hyperledger/fabric/examples/chaincode/go/idchaincode  
 
-///////////////////////////////////////
-启动所有项目。
+///////////////////////////////////////  
+启动所有项目。  
 
 
 
